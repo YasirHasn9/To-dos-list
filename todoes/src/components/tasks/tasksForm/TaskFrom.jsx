@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-
-function TaskFrom() {
+import React, { useState, useEffect } from "react";
+import {Link} from "react-router-dom"
+function TaskFrom({ setTasks, tasks, history }) {
   const [formValues, setFormValues] = useState({
-    id: null,
+    id: Date.now(),
     task: "",
     completed: false
   });
@@ -16,8 +16,14 @@ function TaskFrom() {
 
   const handleSubmit = e => {
     e.preventDefault();
-    console.log(formValues);
+    setFormValues({ ...formValues, id: Date.now() });
+    setTasks([...tasks, formValues]);
+    history.push("/");
   };
+
+  const handleCancel = () => {
+      history.push("/")
+  }
 
   return (
     <form onSubmit={handleSubmit}>
@@ -29,7 +35,8 @@ function TaskFrom() {
         value={formValues.task}
         onChange={handleChange}
       />
-      <button>submiot</button>
+      <button type="submit">submit</button>
+      <button onClick={handleCancel}>Cancel</button>
     </form>
   );
 }
