@@ -1,6 +1,14 @@
 import React, { useState, useEffect } from "react";
-import {Link} from "react-router-dom"
-function TaskFrom({ setTasks, tasks, history }) {
+import { Link } from "react-router-dom";
+function TaskFrom({
+  setTasks,
+  tasks,
+  history,
+  edit,
+  match: {
+    params: { id }
+  }
+}) {
   const [formValues, setFormValues] = useState({
     id: Date.now(),
     task: "",
@@ -9,7 +17,12 @@ function TaskFrom({ setTasks, tasks, history }) {
   // const handleChange = e => {
   //     setFormValues({...formValues , [e.target.name]: e.target.value})
   // } this is a regalur function
-
+  useEffect(() => {
+    if (edit) {
+      const editTask = tasks.filter(task => task.id.toString() === id)[0];
+      setFormValues(editTask);
+    }
+  }, []);
   const handleChange = ({ target: { name, value } }) => {
     return setFormValues({ ...formValues, [name]: value });
   }; // this is function just works like the one above but with a disruction mothed
@@ -22,8 +35,8 @@ function TaskFrom({ setTasks, tasks, history }) {
   };
 
   const handleCancel = () => {
-      history.push("/")
-  }
+    history.push("/");
+  };
 
   return (
     <form onSubmit={handleSubmit}>

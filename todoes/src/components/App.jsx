@@ -24,35 +24,57 @@ function App() {
   }, [tasks]);
 
   const toggleComplete = id => {
-      const updatedTasks = tasks.map(task => {
-          if(task.id === id ){
-              return ({...task, completed : !task.completed})
-          } else {
-              return task
-          }
-      } )
-      setTasks(updatedTasks)
-  }
+    const updatedTasks = tasks.map(task => {
+      if (task.id === id) {
+        return { ...task, completed: !task.completed };
+      } else {
+        return task;
+      }
+    });
+    setTasks(updatedTasks);
+  };
 
   const deleteCompleted = () => {
-      const updatedTask = tasks.filter(task => !task.completed)
-      console.log(updatedTask)
-  }
+    const updatedTask = tasks.filter(task => !task.completed);
+    setTasks(updatedTask);
+    console.log(updatedTask);
+  };
   return (
     <div>
       <Switch>
+          <Route path="/edittask/:id" 
+          render={props => <TaskForm {...props}
+                    setTasks={setTasks} 
+                    tasks={tasks} 
+                    edit={true} 
+                    />}
+          />
+
+
         <Route
           path="/addtask"
           render={props => (
-            <TaskForm {...props} tasks={tasks} setTasks={setTasks} />
+                  <TaskForm 
+                  {...props} 
+                  tasks={tasks} 
+                  setTasks={setTasks} 
+                  edit={false}
+                  />
           )}
         />
+
+
         <Route
           exact
           path="/"
-          render={props => <TaskList {...props} tasks={tasks} 
-          toggle={toggleComplete}
-          del={deleteCompleted} />}
+          render={props => (
+            <TaskList
+              {...props}
+              tasks={tasks}
+              toggle={toggleComplete}
+              del={deleteCompleted}
+            />
+          )}
         />
       </Switch>
       {/* <TaskForm setTasks={setTasks} tasks={tasks} />
